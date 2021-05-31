@@ -1,12 +1,12 @@
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/js/canvas.js',
+  entry: './src/js/life.js',
   output: {
     path: __dirname + '/dist/',
-    filename: './js/canvas.bundle.js'
+    filename: './js/canvas.bundle.js',
   },
   module: {
     rules: [
@@ -16,11 +16,11 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
-          }
-        }
-      }
-    ]
+            presets: ['@babel/preset-env'],
+          },
+        },
+      },
+    ],
   },
   plugins: [
     new BrowserSyncPlugin({
@@ -28,14 +28,13 @@ module.exports = {
       port: 3000,
       server: { baseDir: ['dist'] },
       files: ['./dist/*'],
-      notify: false
+      notify: false,
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      favicon: 'favicon.ico',
-      template: 'src/index.html'
-    })
+      template: 'src/index.html',
+    }),
   ],
   watch: true,
-  devtool: 'source-map'
-}
+  devtool: 'source-map',
+};
