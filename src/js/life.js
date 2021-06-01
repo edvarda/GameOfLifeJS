@@ -1,3 +1,5 @@
+const { IgnorePlugin } = require('webpack');
+
 const GRID_HEIGHT = 100;
 const GRID_WIDTH = 100;
 
@@ -36,21 +38,16 @@ const getScore = (neighbours) =>
 
 const evaluate = (score, cell) => score === 3 || (cell && score === 2);
 
-const getNeighbours = (frame, i, j) => {
-  let neighbours = frame.slice(i - 1, i + 2).reduce((acc, row) => {
-    return [...acc, ...row.slice(j - 1, j + 2)];
-  }, []);
+const getNeighbours = (grid, row, col) => {
+  let neighbours = [-1, 0, 1]
+    .map((i) => [-1, 0, 1].map((j) => (grid[row + i] && grid[row + i][col + j] ? true : false)))
+    .flat();
   neighbours[4] = false; // Not a neighbour to oneself
   return neighbours;
 };
 
 const initGrid = (rows, columns, random = false) => {
   // let grid = Array.from(new Array(rows), () => new Array(columns));
-  // if (random) {
-  //   grid = grid.map((row) => {
-  //     row.map((cell) => (Math.random() > 0.7 ? true : false));
-  //   });
-  // }
   let grid = new Array(rows);
   for (i = 0; i < rows; i++) {
     grid[i] = new Array(columns).fill(false);
@@ -63,4 +60,6 @@ const initGrid = (rows, columns, random = false) => {
   return grid;
 };
 
-module.exports = game;
+const testables = { nextGeneration, getScore, evaluate, getNeighbours, initGrid };
+
+module.exports = { game, testables };
