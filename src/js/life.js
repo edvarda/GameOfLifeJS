@@ -1,5 +1,3 @@
-const { IgnorePlugin } = require('webpack');
-
 const GRID_HEIGHT = 100;
 const GRID_WIDTH = 100;
 
@@ -39,15 +37,16 @@ const getScore = (neighbours) =>
 const evaluate = (score, cell) => score === 3 || (cell && score === 2);
 
 const getNeighbours = (grid, row, col) => {
+  const cellExistsAndIsAlive = (i, j) => (grid[i] && grid[i][j] ? true : false);
   let neighbours = [-1, 0, 1]
-    .map((i) => [-1, 0, 1].map((j) => (grid[row + i] && grid[row + i][col + j] ? true : false)))
+    .map((i) => [-1, 0, 1].map((j) => cellExistsAndIsAlive(row + i, col + j)))
     .flat();
   neighbours[4] = false; // Not a neighbour to oneself
   return neighbours;
 };
 
 const initGrid = (rows, columns, random = false) => {
-  // let grid = Array.from(new Array(rows), () => new Array(columns));
+  // let grid = Array.from(new Array(rows), () => new Array(columns)); // NOTE is this just a vain way of initializing a 2d array?
   let grid = new Array(rows);
   for (i = 0; i < rows; i++) {
     grid[i] = new Array(columns).fill(false);
