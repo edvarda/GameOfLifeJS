@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './src/js/life.js',
+  entry: './src/js/lifeRenderer.js',
   output: {
     path: __dirname + '/dist/',
     filename: './js/canvas.bundle.js',
