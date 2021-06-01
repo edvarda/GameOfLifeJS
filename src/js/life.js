@@ -1,7 +1,7 @@
 const RANDOM_LIFE_THRESHOLD = 0.7;
 
 var game = {
-  init(rows, columns) {
+  initialize(rows, columns) {
     this.rows = rows;
     this.columns = columns;
     this.grid = getNewGrid(rows, columns, (random = true));
