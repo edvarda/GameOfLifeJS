@@ -2,24 +2,22 @@ const RANDOM_LIFE_THRESHOLD = 0.7;
 
 var game = {
   init(rows, columns) {
-    this.gridHeight = rows;
-    this.gridWidth = columns;
+    this.rows = rows;
+    this.columns = columns;
     this.grid = getNewGrid(rows, columns, (random = true));
   },
   tick() {
-    this.grid = nextGeneration(this.grid);
+    this.grid = nextGeneration(this);
   },
   getBoard() {
     return this.grid;
   },
 };
 
-const nextGeneration = (grid) => {
-  const rows = grid.length;
-  const cols = grid[0].length;
-  const nextFrame = Array.from(new Array(rows), () => new Array(cols));
+const nextGeneration = ({ grid, rows, columns }) => {
+  const nextFrame = Array.from(new Array(rows), () => new Array(columns));
   for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < cols; j++) {
+    for (let j = 0; j < columns; j++) {
       const cell = grid[i][j];
       const neighbours = getNeighbours(grid, i, j);
       const score = getScore(neighbours);
