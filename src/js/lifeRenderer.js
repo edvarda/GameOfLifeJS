@@ -1,20 +1,21 @@
-var game = require('./life');
-var canvas, ctx;
+var { game } = require('./life');
 
-function init(width, height) {
-  // Initialize canvas
-  canvas = document.getElementById('canvas');
-  ctx = canvas.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
+const [GRID_WIDTH, GRID_HEIGHT] = [window.innerWidth, window.innerHeight].map((dimension) =>
+  Math.floor(dimension / 10),
+);
 
+(function initialize(width, height) {
+  var canvas = document.getElementById('canvas');
+  var ctx = canvas.getContext('2d');
   canvas.width = width;
   canvas.height = height;
-  game.init(width, height);
+
+  game.init(height, width);
 
   setInterval(update, 500, game, width, height, ctx);
-}
+})(GRID_WIDTH, GRID_HEIGHT);
 
-const update = (game, width, height, ctx) => {
+function update(game, width, height, ctx) {
   var board = game.getBoard();
   var image = ctx.createImageData(width, height);
   for (let i = 0; i < image.data.length; i += 4) {
@@ -23,15 +24,4 @@ const update = (game, width, height, ctx) => {
   }
   ctx.putImageData(image, 0, 0);
   game.tick();
-};
-
-function helloWorld(ctx, width, height) {
-  var image = ctx.createImageData(width, height);
-  for (i = 0; i < image.data.length; i += 4) {
-    if (i == (width * 10 + 11) * 4) {
-      image.data[i + 3] = 255;
-    }
-  }
-  ctx.putImageData(image, 0, 0);
 }
-init(100, 100);
