@@ -1,25 +1,29 @@
-const RANDOM_LIFE_THRESHOLD = 0.7;
+const GRID_HEIGHT = 100;
+const GRID_WIDTH = 100;
 
 var game = {
-  init(rows, columns) {
-    this.gridHeight = rows;
-    this.gridWidth = columns;
-    this.grid = getNewGrid(rows, columns, (random = true));
+  init: function (height = GRID_HEIGHT, width = GRID_WIDTH) {
+    this.gridHeight = height;
+    this.gridWidth = width;
+    this.frame = initGrid(height, width, (random = true));
   },
-  tick() {
-    this.grid = nextGeneration(this);
+  tick: function () {
+    const next = nextGeneration(this.frame);
+    this.frame = next;
   },
-  getBoard() {
-    return this.grid;
+  getBoard: function () {
+    return this.frame;
   },
 };
 
-const nextGeneration = ({ rows, columns, grid }) => {
-  const nextFrame = Array.from(new Array(rows), () => new Array(columns));
+const nextGeneration = (frame) => {
+  const rows = frame.length;
+  const cols = frame[0].length;
+  const nextFrame = Array.from(new Array(rows), () => new Array(cols));
   for (let i = 0; i < rows; i++) {
-    for (let j = 0; j < columns; j++) {
-      const cell = grid[i][j];
-      const neighbours = getNeighbours(grid, i, j);
+    for (let j = 0; j < cols; j++) {
+      const cell = frame[i][j];
+      const neighbours = getNeighbours(frame, i, j);
       const score = getScore(neighbours);
       nextFrame[i][j] = evaluate(score, cell);
     }
@@ -41,13 +45,20 @@ const getNeighbours = (grid, row, col) => {
   return neighbours;
 };
 
-const getNewGrid = (rows, columns, random = false) => {
-  // NOTE Got curious so I did rewrote the array initialization to this. Is it just a vain way of initializing a 2d array?
-  const getRandomBool = () => (Math.random() > RANDOM_LIFE_THRESHOLD ? true : false);
-  const getFillValue = () => (random ? getRandomBool() : false);
-  return Array.from(new Array(rows), () => new Array(columns).fill().map(getFillValue));
+const initGrid = (rows, columns, random = false) => {
+  // let grid = Array.from(new Array(rows), () => new Array(columns)); // NOTE is this just a vain way of initializing a 2d array?
+  let grid = new Array(rows);
+  for (i = 0; i < rows; i++) {
+    grid[i] = new Array(columns).fill(false);
+    if (random) {
+      for (j = 0; j < columns; j++) {
+        grid[i][j] = Math.random() > 0.7 ? true : false;
+      }
+    }
+  }
+  return grid;
 };
 
-const testables = { nextGeneration, getScore, evaluate, getNeighbours, getNewGrid };
+const testables = { nextGeneration, getScore, evaluate, getNeighbours, initGrid };
 
 module.exports = { game, testables };

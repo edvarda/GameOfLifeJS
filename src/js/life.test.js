@@ -8,11 +8,11 @@ describe('it can be tested', () => {
 
   describe('test internal functions', () => {
     test('able to create a new grid', () => {
-      let grid = testables.getNewGrid(10, 10);
+      let grid = testables.initGrid(10, 10);
       expect(grid.length).toBe(10);
       expect(grid.flat().length).toBe(10 * 10);
       expect(grid.flat().every((cell) => cell == false)).toBeTruthy();
-      let randomGrid = testables.getNewGrid(100, 100, (random = true)); // This test will theoretically fail every so often. (p = 0.7^10000 )
+      let randomGrid = testables.initGrid(100, 100, (random = true)); // This test will theoretically fail every so often. (p = 0.7^10000 )
       expect(randomGrid.flat().some((cell) => cell == true)).toBeTruthy();
     });
 
@@ -22,8 +22,7 @@ describe('it can be tested', () => {
       expect(neighbours[4]).toBeFalsy();
       expect(neighbours).toEqual(expectedNeigbours);
     }
-    const getTestGrid = () =>
-      testables.getNewGrid(testGrid.rows, testGrid.columns, (random = true));
+    const getTestGrid = () => testables.initGrid(testGrid.rows, testGrid.columns, (random = true));
 
     test('get neighbours to a cell in the middle of a grid', () => {
       let grid = getTestGrid();
@@ -65,7 +64,7 @@ describe('it can be tested', () => {
       }
 
       function testStartOfColumn() {
-        let [i, j] = [0, Math.floor(testGrid.columns / 2)]; // pick cell on the start of a column
+        let [i, j] = [0, Math.floor(testGrid.columns / 2)]; // pick cell on the start of a row
         const expectedNeigbours = [
           false,
           false,
